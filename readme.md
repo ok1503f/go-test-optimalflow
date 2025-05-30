@@ -34,7 +34,7 @@ created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 
 3. Run the application:
    ```bash
-   go run main.go
+   go run .
    ```
 
 ## API Test Use Postman
@@ -42,7 +42,7 @@ created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 FIRST LOGIN
 
 ```bash
-POST http://localhost:3000/api/users/login
+POST http://localhost:3000/api/login
 
 {
     "email": "test@example.com",
@@ -68,7 +68,7 @@ POST http://localhost:3000/api/users
     "name": "test",
     "email": "test@example.com",
     "password": "password",
-    "balance": 100
+    "balance": 1000
 }
 
 ```
