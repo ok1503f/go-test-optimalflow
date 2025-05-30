@@ -34,7 +34,7 @@ created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 
 3. Run the application:
    ```bash
-   go run main.go
+   go run .
    ```
 
 ## API Test Use Postman
