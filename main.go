@@ -18,6 +18,8 @@ func main() {
 
 	app := fiber.New()
 
+	defer db.Close()
+
 	routes.RegisterRoutes(app, &userHandler)
 
 	app.Listen(":3000")

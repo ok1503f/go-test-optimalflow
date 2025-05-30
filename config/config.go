@@ -9,11 +9,11 @@ import (
 )
 
 const (
-	host     = "localhost"  // or the Docker service name if running in another container
-	port     = 5433         // default PostgreSQL port
-	user     = "myuser"     // as defined in docker-compose.yml
-	password = "mypassword" // as defined in docker-compose.yml
-	dbname   = "mydatabase" // as defined in docker-compose.yml
+	host     = "localhost"
+	port     = 5433
+	user     = "myuser"
+	password = "mypassword"
+	dbname   = "mydatabase"
 )
 
 func InitDB() *sql.DB {

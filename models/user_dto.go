@@ -17,6 +17,13 @@ type CreateUserRequest struct {
 }
 
 type LoginRequest struct {
+	ID       int    `json:"id"`
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required"`
+}
+
+type TransferRequest struct {
+	FromID int     `json:"from_id" validate:"required"`
+	ToID   int     `json:"to_id" validate:"required"`
+	Amount float64 `json:"amount" validate:"required"`
 }

@@ -12,6 +12,7 @@ type UserRepository interface {
 	FindAll() ([]models.UserResponse, error)
 	FindByID(id int) (*models.UserResponse, error)
 	FindByEmail(email string) (*models.UserResponse, error)
+	UpDateBalance(id int, balance float64) error
 }
 
 type userRepository struct {
@@ -105,4 +106,22 @@ func (r *userRepository) FindByEmail(email string) (*models.UserResponse, error)
 	}
 
 	return &user, nil
+}
+
+func (r *userRepository) UpDateBalance(userId int, newBalance float64) error {
+	result, err := r.db.Exec("UPDATE users SET balance = $1 WHERE id = $2", newBalance, userId)
+	if err != nil {
+		return fmt.Errorf("failed to update balance: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("user with id %d not found", userId)
+	}
+
+	return nil
 }

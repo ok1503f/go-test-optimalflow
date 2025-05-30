@@ -13,6 +13,7 @@ type UserService interface {
 	GetUserByID(id int) (*models.UserResponse, error)
 	GetAllUsers() ([]models.UserResponse, error)
 	Authenticate(email, password string) (*models.UserResponse, error)
+	TransferBalance(userId, toID int, amount float64) error
 }
 
 type userService struct {
@@ -58,4 +59,48 @@ func (s *userService) Authenticate(email, password string) (*models.UserResponse
 	}
 
 	return user, nil
+}
+
+func (s *userService) TransferBalance(fromID, toID int, amount float64) error {
+	if fromID <= 0 || toID <= 0 {
+		return errors.New("invalid user ID")
+	}
+
+	if amount <= 0 {
+		return errors.New("amount must be positive")
+	}
+
+	if fromID == toID {
+		return errors.New("same account")
+	}
+	fromUser, err := s.userRepo.FindByID(fromID)
+	if err != nil {
+		return errors.New("failed to find sender")
+	}
+
+	if fromUser.Balance < amount {
+		return errors.New("insufficient balance")
+	}
+
+	toUser, err := s.userRepo.FindByID(toID)
+	if err != nil {
+		return errors.New("failed to find receiver")
+	}
+
+	if fromUser.Balance < amount {
+		return errors.New("insufficient balance")
+	}
+
+	fromUser.Balance -= amount
+	toUser.Balance += amount
+
+	if err := s.userRepo.UpDateBalance(fromID, fromUser.Balance); err != nil {
+		return errors.New("failed to update sender's balance")
+	}
+
+	if err := s.userRepo.UpDateBalance(toID, toUser.Balance); err != nil {
+		return errors.New("failed to update receiver's balance")
+	}
+
+	return nil
 }
